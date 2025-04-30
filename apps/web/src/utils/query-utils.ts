@@ -57,12 +57,17 @@ type UseMutationParams<T extends (...args: any) => Promise<any>> = Parameters<
   typeof useMutation<
     InferResponseType<T, 200>,
     ValidationErrors,
-    Or<
-      InferRequestType<T>["json"] & {
-        options?: Partial<Omit<InferRequestType<T>, "json">>;
-      },
-      InferRequestType<T>["json"]
-    >
+    // Since json is the most commonly used type of body, we'll infer it and use it as the default data type for the mutation
+    // However if the endpoint does not have a json property, we'll fallback to the default data type
+    // Basically, this prevents you from writing .mutate({ json: { ... } }) over and over again and allows you to just write .mutate({ ... })
+    "json" extends keyof InferRequestType<T>
+      ? Or<
+          InferRequestType<T>["json"] & {
+            options?: Partial<Omit<InferRequestType<T>, "json">>;
+          },
+          InferRequestType<T>["json"]
+        >
+      : InferRequestType<T>
   >
 >;
 
@@ -74,11 +79,14 @@ export function createMutationOptions<T extends (...args: any) => Promise<any>>(
 ) {
   return {
     mutationFn: async (args) => {
-      const { options, ...form } = args;
+      // Taken from https://hono.dev/docs/api/request#valid
+      // Doesn't include json because that's the special handling case
+      const targets = ["form", "query", "header", "cookie", "param"];
 
       return await fetcher(endpoint, {
-        form,
-        ...options,
+        ...(Object.keys(args as any).some((key) => targets.includes(key))
+          ? args
+          : { json: args, ...args.options }),
         ...mutationOptions?.hono,
       } as any);
     },

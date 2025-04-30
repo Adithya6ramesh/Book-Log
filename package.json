@@ -6,6 +6,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:push": "pnpm --filter=@repo/server db:push",
+    "ui-add": "turbo run ui-add --ui=tui",
     "db:studio": "pnpm --filter=@repo/server db:studio"
   },
   "devDependencies": {

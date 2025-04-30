@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { env } from "../env";
 import { db } from "./db/index";
 import * as schema from "./db/schema";
 
@@ -8,6 +9,14 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
+  socialProviders: {
+    discord: {
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
+      redirectURI: "http://localhost:8000/api/auth/callback/discord",
+    },
+  },
+  trustedOrigins: ["http://localhost:5173"],
 });
 
 type AuthStatus =

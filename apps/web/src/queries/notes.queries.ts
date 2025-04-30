@@ -1,5 +1,8 @@
 import { client } from "../utils/hono-client";
-import { createQueryOptions } from "../utils/query-utils";
+import {
+  createMutationOptions,
+  createQueryOptions,
+} from "../utils/query-utils";
 
 export const notesQueryOptions = createQueryOptions(
   ["notes"],
@@ -9,4 +12,8 @@ export const notesQueryOptions = createQueryOptions(
 export const noteByIdQueryOptions = createQueryOptions(
   ({ param: { id } }) => ["notes", id],
   client.notes[":id"].$get
+);
+
+export const createNoteMutationOptions = createMutationOptions(
+  client.notes.$post
 );

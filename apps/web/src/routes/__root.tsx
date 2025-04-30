@@ -1,3 +1,4 @@
+import { Toaster } from "@repo/ui/toast";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -33,6 +34,7 @@ function RootComponent() {
         </Link>
       </div>
       <hr />
+      <Toaster />
       <Outlet />
       <ReactQueryDevtools buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />

@@ -1,10 +1,11 @@
+import { zValidator } from "@hono/zod-validator";
+import { createNotesSchema } from "@repo/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { type HonoAppContext } from "../auth";
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { withAuth } from "../middlewares/auth.middleware";
-
 export const notes = new Hono<HonoAppContext>()
   .get("/", async (c) => {
     // By default if there is no withAuth middleware passed, the user can either be null or defined
@@ -17,18 +18,29 @@ export const notes = new Hono<HonoAppContext>()
           createdAt: true,
           title: true,
           id: true,
-          userId: true,
+        },
+        with: {
+          user: {
+            columns: {
+              id: true,
+              name: true,
+            },
+          },
         },
       })
-    ).map(({ userId, ...note }) => ({ ...note, isOwner: userId === user?.id }));
+    ).map(({ user, ...note }) => ({
+      ...note,
+      isOwner: user.id === user?.id,
+      creatorName: user.name,
+    }));
 
     return c.json(notes, 200);
   })
-  .post("/", withAuth, async (c) => {
+  .post("/", zValidator("json", createNotesSchema), withAuth, async (c) => {
     // However here since we have withAuth middleware, the user is always garaunteed to be defined
     const user = c.var.user;
 
-    const { title, content } = await c.req.json();
+    const { title, content } = await c.req.valid("json");
 
     const note = await db
       .insert(schema.note)
