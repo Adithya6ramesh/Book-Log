@@ -1,0 +1,39 @@
+{
+  "name": "@repo/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm with-env vite --clearScreen false",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.ts\"",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@repo/server": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@tailwindcss/vite": "^4.1.4",
+    "@tanstack/react-query": "^5.74.11",
+    "@tanstack/react-query-devtools": "5.0.0-alpha.91",
+    "@tanstack/react-router": "^1.117.1",
+    "@tanstack/react-router-devtools": "^1.117.1",
+    "hono": "^4.7.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^4.1.4"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@tanstack/eslint-plugin-query": "^5.74.7",
+    "@tanstack/router-plugin": "^1.117.2",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^3.1.0",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.1.4"
+  }
+}
