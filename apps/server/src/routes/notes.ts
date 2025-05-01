@@ -7,6 +7,7 @@ import { type HonoAppContext } from "../auth";
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { withAuth } from "../middlewares/auth.middleware";
+
 export const notes = new Hono<HonoAppContext>()
   .get("/", async (c) => {
     // By default if there is no withAuth middleware passed, the user can either be null or defined
