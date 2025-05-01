@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { createNotesSchema } from "@repo/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
+import type { z } from "zod";
 import { type HonoAppContext } from "../auth";
 import { db } from "../db/index";
 import * as schema from "../db/schema";
@@ -41,6 +42,18 @@ export const notes = new Hono<HonoAppContext>()
     const user = c.var.user;
 
     const { title, content } = await c.req.valid("json");
+
+    if (title === "error" && content === "error") {
+      // This is how you would ideally want to throw an error in a route
+      // The shape of the error is up to you and will get inferred by the client's useMutation hook
+      return c.json(
+        { message: "Sample Error", forField: "content" } as {
+          message: string;
+          forField: keyof z.infer<typeof createNotesSchema>;
+        },
+        400
+      );
+    }
 
     const note = await db
       .insert(schema.note)

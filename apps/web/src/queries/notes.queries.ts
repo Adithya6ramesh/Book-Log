@@ -9,6 +9,7 @@ export const notesQueryOptions = createQueryOptions(
   client.notes.$get
 );
 
+// This is not used in the example app, however it's to demonstrate how you could pass parameters to the query key
 export const noteByIdQueryOptions = createQueryOptions(
   ({ param: { id } }) => ["notes", id],
   client.notes[":id"].$get

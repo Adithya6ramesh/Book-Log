@@ -21,7 +21,7 @@ export const withoutAuth = createMiddleware<
   const user = c.get("user");
 
   if (user) {
-    throw new HTTPException(401, {
+    throw new HTTPException(400, {
       message: "Only non-authenticated users can access this route",
     });
   }

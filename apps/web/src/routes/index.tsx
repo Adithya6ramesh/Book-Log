@@ -10,14 +10,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AuthShowcase } from "../components/auth-showcase";
 import { CreateNote } from "../components/create-note";
 import { notesQueryOptions } from "../queries/notes.queries";
-import { useSession } from "../utils/auth-client";
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const { isAuthenticated } = useSession();
-
   const notesQuery = useQuery(notesQueryOptions());
 
   return (
@@ -28,11 +26,11 @@ function Index() {
         </h1>
         <AuthShowcase />
       </div>
-      {isAuthenticated && <CreateNote />}
+      <CreateNote />
       {notesQuery.data?.map((note) => (
         <Card
           key={note.id}
-          className="w-full max-w-lg shadow-md hover:shadow-lg transition-shadow"
+          className="w-full max-w-lg shadow-md hover:shadow-lg transition-shadow bg-transparent text-white border-zinc-600"
         >
           <CardHeader>
             <CardTitle className="text-xl font-bold">{note.title}</CardTitle>
@@ -40,7 +38,7 @@ function Index() {
               {note.content}
             </CardDescription>
           </CardHeader>
-          <CardFooter className="text-sm text-gray-500 flex justify-between items-center border-t pt-3">
+          <CardFooter className="text-sm text-gray-300 flex justify-between items-center border-t border-zinc-600 pt-3">
             <span>Created by: {note.creatorName}</span>
             {note.isOwner && (
               <span className="text-blue-500 text-xs font-medium">

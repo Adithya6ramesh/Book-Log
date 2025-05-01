@@ -2,18 +2,23 @@ import { queryOptions, useMutation } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 
 type Parameter<T> = T extends (arg: infer T) => any ? T : never;
-
 const fetcher = async <T extends (arg: any) => any>(
   fn: T,
   data: Parameter<T>
 ): Promise<InferResponseType<T>> => {
   const res: any = await fn(data);
 
-  const json = await res.json();
-
   if (!res.ok) {
-    return json.error ? Promise.reject(json.error) : Promise.reject(json);
+    let error;
+    try {
+      error = await res.clone().json();
+    } catch {
+      error = await res.clone().text();
+    }
+    throw error;
   }
+
+  const json = await res.json();
 
   return json;
 };
@@ -71,26 +76,51 @@ type UseMutationParams<T extends (...args: any) => Promise<any>> = Parameters<
   >
 >;
 
-export function createMutationOptions<T extends (...args: any) => Promise<any>>(
-  endpoint: T,
-  mutationOptions?: UseMutationParams<T>[0] & {
-    hono?: Omit<InferRequestType<T>, "json">;
-  }
-) {
-  return {
-    mutationFn: async (args) => {
-      // Taken from https://hono.dev/docs/api/request#valid
-      // Doesn't include json because that's the special handling case
-      const targets = ["form", "query", "header", "cookie", "param"];
+type ErrorStatusCodes = 400 | 401 | 403 | 404 | 500;
 
-      return await fetcher(endpoint, {
-        ...(Object.keys(args as any).some((key) => targets.includes(key))
-          ? args
-          : { json: args, ...args.options }),
-        ...mutationOptions?.hono,
-      } as any);
-    },
-  } satisfies UseMutationParams<T>[0] & {
-    hono?: Omit<InferRequestType<T>, "json">;
-  };
+// There is probably a simpler way to do this but this'll do for now
+
+type OnErrorMutationOption<T extends (...args: any) => Promise<any>> =
+  | ((
+      error: InferResponseType<T, ErrorStatusCodes> extends never
+        ? unknown
+        : InferResponseType<T, ErrorStatusCodes>,
+      variables: Parameters<
+        Exclude<Pick<UseMutationParams<T>[0], "onError">["onError"], undefined>
+      >[1],
+      context: Parameters<
+        Exclude<Pick<UseMutationParams<T>[0], "onError">["onError"], undefined>
+      >[2]
+    ) => ReturnType<
+      Exclude<Pick<UseMutationParams<T>[0], "onError">["onError"], undefined>
+    >)
+  | undefined;
+
+type CustomMutationOptions<T extends (...args: any) => Promise<any>> = Omit<
+  UseMutationParams<T>[0],
+  "onError"
+> & {
+  hono?: Omit<InferRequestType<T>, "json">;
+  onError?: OnErrorMutationOption<T>;
+};
+
+export function createMutationOptions<T extends (...args: any) => Promise<any>>(
+  endpoint: T
+): (options?: CustomMutationOptions<T>) => CustomMutationOptions<T> {
+  return ({ hono, ...options }: CustomMutationOptions<T> = {}) =>
+    ({
+      mutationFn: async (args) => {
+        // Taken from https://hono.dev/docs/api/request#valid
+        // Doesn't include json because that's the special handling case
+        const targets = ["form", "query", "header", "cookie", "param"];
+
+        return await fetcher(endpoint, {
+          ...(Object.keys(args as any).some((key) => targets.includes(key))
+            ? args
+            : { json: args, ...args.options }),
+          ...hono,
+        } as any);
+      },
+      ...options,
+    }) satisfies CustomMutationOptions<T>;
 }
