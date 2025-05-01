@@ -10,7 +10,7 @@ export const AuthShowcase = () => {
   const signIn = async () => {
     await authClient.signIn.social({
       provider: "discord",
-      callbackURL: "http://localhost:5173",
+      callbackURL: window.location.origin,
     });
   };
 
@@ -22,7 +22,7 @@ export const AuthShowcase = () => {
     return <p>Loading...</p>;
   }
 
-  if (session) {
+  if (session?.user) {
     return (
       <>
         <p>Signed in as {session.user.email}</p>

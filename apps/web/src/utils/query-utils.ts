@@ -1,6 +1,9 @@
 import { queryOptions, useMutation } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 
+// This file contains utility functions for creating query and mutation options from hono endpoints
+// Usually you wouldn't need to change anything here unless you want to change how the fetching is done or want to change something about the types
+
 type Parameter<T> = T extends (arg: infer T) => any ? T : never;
 const fetcher = async <T extends (arg: any) => any>(
   fn: T,

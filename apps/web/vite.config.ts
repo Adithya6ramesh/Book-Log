@@ -6,6 +6,8 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     rollupOptions: {
+      // Making extra sure that the server is not bundled into the client
+      external: ["@repo/server"],
       onwarn(warning, warn) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
         warn(warning);
