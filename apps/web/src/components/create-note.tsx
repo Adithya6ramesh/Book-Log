@@ -13,7 +13,10 @@ import { Input } from "@repo/ui/input";
 import { toast } from "@repo/ui/toast";
 import { createNotesSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNoteMutationOptions } from "../queries/notes.queries";
+import {
+  createNoteMutationOptions,
+  notesQueryOptions,
+} from "../queries/notes.queries";
 
 export const CreateNote = () => {
   const form = useForm({
@@ -40,9 +43,13 @@ export const CreateNote = () => {
           toast.error(error as any);
         }
       },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["notes"] });
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: notesQueryOptions().queryKey,
+        });
+
         form.reset();
+
         toast.success("Note created successfully");
       },
     })
@@ -100,8 +107,12 @@ export const CreateNote = () => {
           />
         </div>
 
-        <Button type="submit" disabled={createNoteMutation.isPending}>
-          {createNoteMutation.isPending ? "Creating..." : "Create Note"}
+        <Button
+          type="submit"
+          disabled={createNoteMutation.isPending}
+          className="opacity-100 disabled:opacity-60"
+        >
+          Create Note
         </Button>
       </form>
     </Form>

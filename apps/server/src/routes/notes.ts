@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { createNotesSchema } from "@repo/validators";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import type { z } from "zod";
 import { type HonoAppContext } from "../auth";
@@ -21,6 +21,7 @@ export const notes = new Hono<HonoAppContext>()
           title: true,
           id: true,
         },
+        limit: 10,
         with: {
           user: {
             columns: {
@@ -29,11 +30,12 @@ export const notes = new Hono<HonoAppContext>()
             },
           },
         },
+        orderBy: [desc(schema.note.createdAt)],
       })
-    ).map(({ user, ...note }) => ({
+    ).map(({ user: creator, ...note }) => ({
       ...note,
-      isOwner: user.id === user?.id,
-      creatorName: user.name,
+      isOwner: creator.id === user?.id,
+      creatorName: creator.name,
     }));
 
     return c.json(notes, 200);
