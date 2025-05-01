@@ -4,19 +4,15 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
-    BETTER_AUTH_URL: z.string().min(1),
     BETTER_AUTH_SECRET: z.string().min(1),
     DISCORD_CLIENT_ID: z.string().min(1),
     DISCORD_CLIENT_SECRET: z.string().min(1),
+    WEB_URL:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional().default("http://localhost:5173"),
+    VITE_SERVER_URL: z.string().min(1),
   },
-
-  /**
-   * The prefix that client-side variables must have. This is enforced both at
-   * a type-level and at runtime.
-   */
-  clientPrefix: "VITE_",
-
-  client: {},
 
   /**
    * Makes sure you explicitly access **all** environment variables
@@ -24,10 +20,11 @@ export const env = createEnv({
    */
   runtimeEnvStrict: {
     DATABASE_URL: process.env.DATABASE_URL,
-    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    WEB_URL: process.env.WEB_URL,
+    VITE_SERVER_URL: process.env.VITE_SERVER_URL,
   },
 
   /**

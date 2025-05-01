@@ -13,10 +13,10 @@ export const auth = betterAuth({
     discord: {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
-      redirectURI: "http://localhost:8000/api/auth/callback/discord",
+      redirectURI: `${env.VITE_SERVER_URL}/api/auth/callback/discord`,
     },
   },
-  trustedOrigins: ["http://localhost:5173"],
+  trustedOrigins: [env.WEB_URL],
 });
 
 type AuthStatus =

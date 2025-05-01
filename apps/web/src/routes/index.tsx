@@ -34,7 +34,7 @@ function Index() {
         >
           <CardHeader>
             <CardTitle className="text-xl font-bold">{note.title}</CardTitle>
-            <CardDescription className="mt-2 text-gray-600">
+            <CardDescription className="mt-2 text-gray-300">
               {note.content}
             </CardDescription>
           </CardHeader>

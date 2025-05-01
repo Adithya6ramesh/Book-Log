@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { cors } from "hono/cors";
+import { env } from "../env";
 import { auth, type HonoAppContext } from "./auth";
 import { notes } from "./routes/notes";
 
@@ -11,7 +12,7 @@ const app = new Hono<HonoAppContext>()
   .use(
     "*",
     cors({
-      origin: ["http://localhost:5173"],
+      origin: [env.WEB_URL],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
