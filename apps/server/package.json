@@ -18,7 +18,8 @@
         "db:studio": "pnpm with-env drizzle-kit studio",
         "db:push": "pnpm with-env drizzle-kit push",
         "start": "pnpm with-env node dist/src/index.js",
-        "with-env": "dotenv -e ../../.env --"
+        "with-env": "dotenv -e ../../.env --",
+        "create:route": "node ./new-route.js"
     },
     "dependencies": {
         "@hono/node-server": "^1.14.1",

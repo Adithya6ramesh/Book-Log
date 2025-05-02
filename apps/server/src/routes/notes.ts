@@ -38,6 +38,7 @@ export const notes = new Hono<HonoAppContext>()
       creatorName: creator.name,
     }));
 
+    // We always set the status to ensure that type inferences are correct on the client side
     return c.json(notes, 200);
   })
   .post("/", zValidator("json", createNotesSchema), withAuth, async (c) => {
