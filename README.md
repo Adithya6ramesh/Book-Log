@@ -42,6 +42,34 @@ packages
       └─ Zod schemas that are shared between client and server
 ```
 
+## Quick start for running the example app
+
+Before proceeding, it's highly recommended that you read the sections below to understand the stack better. But eitherways, here's how you can run the example app:
+
+```text
+# Install dependencies
+pnpm i
+
+# Configure environment variables
+# There is an `.env.example` in the root directory you can use for reference
+cp .env.example .env
+
+# Push the Drizzle schema to the database
+pnpm db:push
+```
+
+You will need to create a Discord application which is possible via this link: https://discord.com/developers/applications
+
+After creating the application, navigate to it's settings page and then click on `OAuth2` on the sidebar. Add the following to `Redirects`:
+
+```
+http://localhost:8000/api/auth/callback/discord
+```
+
+If you've changed the server's default port, make sure to both include it in the `VITE_SERVER_URL` environment variable and in the the redirect URI above
+
+Visit `http://localhost:5173` and start building! 🚀
+
 ## Type-safety
 
 Reno Stack has a relatively unique approach for handling E2E type-safety. [Hono RPC](https://hono.dev/docs/guides/rpc) is an amazing start for having type-safety, but some difficulties start to occur when you want to use it with React Query (which is what this stack uses and heavily recommends, since rolling your own fetching strategy requires a lot of boilerplate)
@@ -142,22 +170,6 @@ export const notes = new Hono<HonoAppContext>()
 	// ...
 ```
 
-## Running the example app
-
-if you want to run the example, make sure you've pushed the database migrations via `pnpm db:push` at the project root level and then, you will need to create a Discord application which is possible via this link: https://discord.com/developers/applications
-
-After creating the application, navigate to it's settings page and then click on `OAuth2` on the sidebar. Add the following to `Redirects`:
-
-```
-http://localhost:8000/api/auth/callback/discord
-```
-
-If you've changed the server's default port, make sure to both include it in the `VITE_SERVER_URL` environment variable and in the the redirect URI above
-
-Last step, run `pnpm install` to install the dependencies and then run `pnpm dev` to start the development server.
-
-Visit `http://localhost:5173` and start building! 🚀
-
 ## Creating new routes and new components
 
 There are two commands that can help you create new routes and new components.
@@ -172,7 +184,7 @@ Simply run `pnpm ui-add <name>` and select which UI components you want to add f
 
 ## Motivation
 
-This stack is heavily inspired by the T3 stack and it's Turborepo template. However, Reno Stack takes a slightly different approach to building full-stack web applications.
+This stack is heavily inspired by the [T3 stack](https://create.t3.gg/) and it's [Turborepo template](https://github.com/t3-oss/create-t3-turbo). However, Reno Stack takes a slightly different approach to building full-stack web applications.
 
 Instead of letting Next handle both API and client, in Reno Stack they are decoupled. Your frontend is a React application powered by Vite and your backend server is powered by Hono and they communicate with each other through type-safe API calls. Faster iteration, simple and efficient.
 
