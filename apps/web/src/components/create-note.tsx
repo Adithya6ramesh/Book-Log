@@ -62,7 +62,7 @@ export const CreateNote = () => {
         work
       </span>
       <form
-        className="flex items-start w-full max-w-lg gap-2"
+        className="flex items-start w-full max-w-2xl gap-2"
         onSubmit={form.handleSubmit((data) => createNoteMutation.mutate(data))}
       >
         <div className="flex flex-col w-full gap-2">

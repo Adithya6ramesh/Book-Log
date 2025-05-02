@@ -16,7 +16,7 @@ export const Notes = ({
   return notes.map((note) => (
     <Card
       key={note.id}
-      className="w-full max-w-lg shadow-md hover:shadow-lg transition-shadow bg-transparent text-white border-zinc-600"
+      className="w-full max-w-2xl shadow-md hover:shadow-lg transition-shadow bg-transparent text-white border-zinc-600"
     >
       <CardHeader>
         <CardTitle className="text-xl font-bold">{note.title}</CardTitle>

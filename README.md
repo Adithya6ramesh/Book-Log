@@ -1,10 +1,10 @@
-# Bruh Stack
+# Reno Stack
 
-![Bruh Stack Banner](https://raw.githubusercontent.com/kasraghoreyshi/kasraghoreyshi/refs/heads/main/banner.jpg)
+![Reno Stack Banner](https://raw.githubusercontent.com/kasraghoreyshi/kasraghoreyshi/refs/heads/main/banner.jpg)
 
 > **CSR-focused • Self-hostable • Opinionated**
 
-Bruh Stack is a modern, opinionated web app starter kit built for speed, efficiency, and self-hosting
+Reno Stack is a modern, opinionated web app starter kit built for speed, efficiency, and self-hosting
 
 ## 🚀 Features
 
@@ -44,7 +44,7 @@ packages
 
 ## Type-safety
 
-Bruh Stack has a relatively unique approach for handling E2E type-safety. [Hono RPC](https://hono.dev/docs/guides/rpc) is an amazing start for having type-safety, but some difficulties start to occur when you want to use it with React Query (which is what this stack uses and heavily recommends, since rolling your own fetching strategy requires a lot of boilerplate)
+Reno Stack has a relatively unique approach for handling E2E type-safety. [Hono RPC](https://hono.dev/docs/guides/rpc) is an amazing start for having type-safety, but some difficulties start to occur when you want to use it with React Query (which is what this stack uses and heavily recommends, since rolling your own fetching strategy requires a lot of boilerplate)
 
 ### The Problem
 
@@ -71,11 +71,11 @@ queryFn: () => fetchWrapper(client.notes.$get)
 
 Now this may seem like it's fully type-safe, but it can get annoying. What if some of our endpoints occasionally return errors? We'd have to do something like `InferResponseType<typeof client.notes.$get, 200>` to get the success payload type. Not to mention you'd have to do the same for mutations and their error types.
 
-This will result in a lot of repetition in the long run, `fetchWrapper` is repeated every time and perhaps the worst of all, our `queryKey` is a magical array. If we want to invalidate it somewhere else, we have no safe way of accessing it, unless we create a central file for keeping the keys. Now unto what Bruh Stack does to mitigate these problems:
+This will result in a lot of repetition in the long run, `fetchWrapper` is repeated every time and perhaps the worst of all, our `queryKey` is a magical array. If we want to invalidate it somewhere else, we have no safe way of accessing it, unless we create a central file for keeping the keys. Now unto what Reno Stack does to mitigate these problems:
 
 ### The Solution
 
-React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/kasraghoreyshi/bruh-stack/blob/main/apps/web/src/utils/query-utils.ts) that couples extremely well with Hono RPC. This utility gives you two functions called `createQueryOptions` and `createMutationOptions`. Here's how you'd use them:
+React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/kasraghoreyshi/reno-stack/blob/main/apps/web/src/utils/query-utils.ts) that couples extremely well with Hono RPC. This utility gives you two functions called `createQueryOptions` and `createMutationOptions`. Here's how you'd use them:
 
 For each route of our application, we'll create a `{route}.queries.ts` under a folder named `queries` in our web application (these naming conventions are arbitrary and can be changed to anything that you'd like)
 
@@ -122,15 +122,15 @@ No more magic literals and fully type-safe. Mutations are also used in the same 
 
 ## Database
 
-Bruh Stack uses Drizzle and the postrgres driver by default. Once you've set your environment variables from `.env.example` and populated `DATABASE_URL`, you can push the drizzle migrations by running `pnpm db:push` at the project's root level. You can view and change the schema by opening `schema.ts`, however as long as you are using Better-Auth which is included by default, you _do not_ want to change anything in `auth-schema.ts` unless you are following [this guide](https://www.better-auth.com/docs/concepts/database#custom-table-names).
+Reno Stack uses Drizzle and the postrgres driver by default. Once you've set your environment variables from `.env.example` and populated `DATABASE_URL`, you can push the drizzle migrations by running `pnpm db:push` at the project's root level. You can view and change the schema by opening `schema.ts`, however as long as you are using Better-Auth which is included by default, you _do not_ want to change anything in `auth-schema.ts` unless you are following [this guide](https://www.better-auth.com/docs/concepts/database#custom-table-names).
 
 ## Authentication
 
 It's highly recommended that you check out [Better-Auth's documentation](https://www.better-auth.com/docs/introduction) for learning more about the library.
 
-In short, you have a default schema file (`auth-schema.ts`) in the server app that is generated by Better-Auth and a main entry point called `auth.ts`. You can add any strategies that you want such as OAuth2 (Bruh Stack's example comes with a Discord OAuth integration), email and password, OTP, etc
+In short, you have a default schema file (`auth-schema.ts`) in the server app that is generated by Better-Auth and a main entry point called `auth.ts`. You can add any strategies that you want such as OAuth2 (Reno Stack's example comes with a Discord OAuth integration), email and password, OTP, etc
 
-Bruh Stack comes with a `withAuth` middleware that you could use in any of your routes/group of routes. Example usage of a simple `notes` router:
+Reno Stack comes with a `withAuth` middleware that you could use in any of your routes/group of routes. Example usage of a simple `notes` router:
 
 ```typescript
 export const notes = new Hono<HonoAppContext>()
@@ -154,15 +154,15 @@ If you've changed the server's default port, make sure to both include it in the
 
 ## Motivation
 
-This stack is heavily inspired by the T3 stack and it's Turborepo template. However, Bruh Stack takes a slightly different approach to building full-stack web applications.
+This stack is heavily inspired by the T3 stack and it's Turborepo template. However, Reno Stack takes a slightly different approach to building full-stack web applications.
 
-Instead of letting Next handle both API and client, in Bruh Stack they are decoupled. Your frontend is a React application powered by Vite and your backend server is powered by Hono and they communicate with each other through type-safe API calls. Faster iteration, simple and efficient.
+Instead of letting Next handle both API and client, in Reno Stack they are decoupled. Your frontend is a React application powered by Vite and your backend server is powered by Hono and they communicate with each other through type-safe API calls. Faster iteration, simple and efficient.
 
-There are debates on whether or not search engines have improved so much that websites using CSR wouldn't be any different than the server-first ones, but generally Bruh Stack's philosophy works particularly well for websites that don't rely on SEO, because you won't have features like SSG and SSR enabled by default (although it is possible, it's just not included in this template at this point)
+There are debates on whether or not search engines have improved so much that websites using CSR wouldn't be any different than the server-first ones, but generally Reno Stack's philosophy works particularly well for websites that don't rely on SEO, because you won't have features like SSG and SSR enabled by default (although it is possible, it's just not included in this template at this point)
 
 ## Future Plans
 
-While Bruh Stack is very opinionated at it's core, having a CLI tool to help you generate new projects and use different technologies (e.g. different ORM, different frontend framework) would be ideal
+While Reno Stack is very opinionated at it's core, having a CLI tool to help you generate new projects and use different technologies (e.g. different ORM, different frontend framework) would be ideal
 
 ## 🧑‍💻 Contributing
 
