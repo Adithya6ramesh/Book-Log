@@ -72,6 +72,8 @@ If you've changed the server's default port, make sure to both include it in the
 
 Visit `http://localhost:5173` and start building! 🚀
 
+![Example App Screenshot](https://raw.githubusercontent.com/kasraghoreyshi/kasraghoreyshi/refs/heads/main/example-app.png)
+
 ## Type-safety
 
 Reno Stack has a relatively unique approach for handling E2E type-safety. [Hono RPC](https://hono.dev/docs/guides/rpc) is an amazing start for having type-safety, but some difficulties start to occur when you want to use it with React Query (which is what this stack uses and heavily recommends, since rolling your own fetching strategy requires a lot of boilerplate)
