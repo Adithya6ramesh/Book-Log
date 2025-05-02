@@ -124,6 +124,8 @@ No more magic literals and fully type-safe. Mutations are also used in the same 
 
 Reno Stack uses Drizzle and the postrgres driver by default. Once you've set your environment variables from `.env.example` and populated `DATABASE_URL`, you can push the drizzle migrations by running `pnpm db:push` at the project's root level. You can view and change the schema by opening `schema.ts`, however as long as you are using Better-Auth which is included by default, you _do not_ want to change anything in `auth-schema.ts` unless you are following [this guide](https://www.better-auth.com/docs/concepts/database#custom-table-names).
 
+You can also use the `pnpm db:studio` command to open the Drizzle Studio UI where you can view the database schema and data.
+
 ## Authentication
 
 It's highly recommended that you check out [Better-Auth's documentation](https://www.better-auth.com/docs/introduction) for learning more about the library.
@@ -155,6 +157,18 @@ If you've changed the server's default port, make sure to both include it in the
 Last step, run `pnpm install` to install the dependencies and then run `pnpm dev` to start the development server.
 
 Visit `http://localhost:5173` and start building! 🚀
+
+## Creating new routes and new components
+
+There are two commands that can help you create new routes and new components.
+
+### Creating a new route
+
+Simply run `pnpm create:route <name>` and you'll get a new route file in the `apps/server/src/routes` folder.
+
+### Creating a new component
+
+Simply run `pnpm ui-add <name>` and select which UI components you want to add from the Shadcn UI library. They will appear in `packages/ui/src` folder.
 
 ## Motivation
 
