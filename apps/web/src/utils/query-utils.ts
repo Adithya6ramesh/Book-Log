@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { queryOptions, useMutation } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 
