@@ -114,11 +114,10 @@ export function createMutationOptions<T extends (...args: any) => Promise<any>>(
     ({
       mutationFn: async (args) => {
         // Taken from https://hono.dev/docs/api/request#valid
-        // Doesn't include json because that's the special handling case
-        const targets = ["form", "query", "header", "cookie", "param"];
+        const targets = ["form", "json", "query", "header", "cookie", "param"];
 
         return await fetcher(endpoint, {
-          ...(Object.keys(args as any).some((key) => targets.includes(key))
+          ...(Object.keys(args as any).every((key) => targets.includes(key))
             ? args
             : { json: args, ...args.options }),
           ...hono,
