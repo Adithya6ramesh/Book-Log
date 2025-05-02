@@ -9,6 +9,7 @@ Reno Stack is a modern, opinionated web app starter kit built for speed, efficie
 ## 🚀 Features
 
 - ⚛️ **React App powered by Vite** – Simple, ridiculously fast, reliable
+- 🚦 **Routing powered by Tanstack Router** – Powerful solution for file-based routing
 - 🔐 **Authentication Included** Dead simple authentication using [Better-Auth](https://www.better-auth.com/docs)
 - 🎨 **Tailwind + Shadcn** – Build beautiful UI at a fast pace
 - 🔗 **Type-safe and powerful DX** End-to-end type safety between client and server
@@ -178,9 +179,13 @@ export const notes = new Hono<HonoAppContext>()
 
 There are two commands that can help you create new routes and new components.
 
-### Creating a new route
+### Creating a new server route
 
 Simply run `pnpm create:route <name>` and you'll get a new route file in the `apps/server/src/routes` folder.
+
+#### Creating a new client route
+
+We might make this easier in the future by combining it with the `create:route` command. For now, please follow the [Tanstack Router docs](https://tanstack.com/router/latest/docs/framework/react/overview) to create a new client route.
 
 ### Creating a new component
 
