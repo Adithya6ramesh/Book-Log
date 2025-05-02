@@ -9,7 +9,7 @@ Reno Stack is a modern, opinionated web app starter kit built for speed, efficie
 ## 🚀 Features
 
 - ⚛️ **React App powered by Vite** – Simple, ridiculously fast, reliable
-- 🚦 **Routing powered by Tanstack Router** – Powerful solution for file-based routing
+- 🚦  **Routing powered by Tanstack Router** – Powerful solution for file-based routing
 - 🔐 **Authentication Included** Dead simple authentication using [Better-Auth](https://www.better-auth.com/docs)
 - 🎨 **Tailwind + Shadcn** – Build beautiful UI at a fast pace
 - 🔗 **Type-safe and powerful DX** End-to-end type safety between client and server
