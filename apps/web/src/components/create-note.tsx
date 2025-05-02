@@ -39,8 +39,8 @@ export const CreateNote = () => {
           form.setError(error.forField, { message: error.message });
         } else {
           // This is for the authentication error
-          // Hono RPC doesn't support middleware type inference so we need to cast it to any
-          toast.error(error as any);
+          // Hono RPC doesn't support middleware type inference so we need to cast it to string
+          toast.error(error as unknown as string);
         }
       },
       onSuccess: async () => {
