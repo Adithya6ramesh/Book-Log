@@ -66,6 +66,8 @@ After creating the application, navigate to it's settings page and then click on
 http://localhost:8000/api/auth/callback/discord
 ```
 
+At last, grab the CLIENT_ID and CLIENT_SECRET and add them to the `.env` file.
+
 If you've changed the server's default port, make sure to both include it in the `VITE_SERVER_URL` environment variable and in the the redirect URI above
 
 Visit `http://localhost:5173` and start building! 🚀
