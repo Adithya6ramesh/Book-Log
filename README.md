@@ -152,6 +152,10 @@ http://localhost:8000/api/auth/callback/discord
 
 If you've changed the server's default port, make sure to both include it in the `VITE_SERVER_URL` environment variable and in the the redirect URI above
 
+Last step, run `pnpm install` to install the dependencies and then run `pnpm dev` to start the development server.
+
+Visit `http://localhost:5173` and start building! 🚀
+
 ## Motivation
 
 This stack is heavily inspired by the T3 stack and it's Turborepo template. However, Reno Stack takes a slightly different approach to building full-stack web applications.

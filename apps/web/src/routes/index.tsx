@@ -22,7 +22,7 @@ function Index() {
           </span>
         </h1>
         <p className="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-300 text-center max-w-xl">
-          The modern, beautiful, and{" "}
+          The modern, efficient, and{" "}
           <span className="font-semibold text-primary">fun</span> stack for your
           next project. <span className="inline-block text-white">🚀</span>
         </p>
