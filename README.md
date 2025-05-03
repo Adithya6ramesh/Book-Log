@@ -9,7 +9,7 @@ Reno Stack is a modern, opinionated web app starter kit built for speed, efficie
 ## 🚀 Features
 
 - ⚛️ **React App powered by Vite** – Simple, ridiculously fast, reliable
-- 🚦  **Routing powered by Tanstack Router** – Powerful solution for file-based routing
+- 🚦 **Routing powered by Tanstack Router** – Powerful solution for file-based routing
 - 🔐 **Authentication Included** Dead simple authentication using [Better-Auth](https://www.better-auth.com/docs)
 - 🎨 **Tailwind + Shadcn** – Build beautiful UI at a fast pace
 - 🔗 **Type-safe and powerful DX** End-to-end type safety between client and server
@@ -108,7 +108,7 @@ This will result in a lot of repetition in the long run, `fetchWrapper` is repea
 
 ### The Solution
 
-React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/kasraghoreyshi/reno-stack/blob/main/apps/web/src/utils/query-utils.ts) that couples extremely well with Hono RPC. This utility gives you two functions called `createQueryOptions` and `createMutationOptions`. Here's how you'd use them:
+React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/reno-stack/hono-react-query) that couples extremely well with Hono RPC. This utility gives you two functions called `createHonoQueryOptions` and `createHonoMutationOptions`. Here's how you'd use them:
 
 For each route of our application, we'll create a `{route}.queries.ts` under a folder named `queries` in our web application (these naming conventions are arbitrary and can be changed to anything that you'd like)
 
@@ -118,21 +118,21 @@ Let's use the same example route in the _Problem_ section which is a `notes` rou
 import { client } from "../utils/hono-client";
 
 import {
-  createMutationOptions,
-  createQueryOptions,
-} from "../utils/query-utils";
+  createHonoMutationOptions,
+  createHonoQueryOptions,
+} from "@reno-stack/hono-react-query";
 
-export const notesQueryOptions = createQueryOptions(
+export const notesQueryOptions = createHonoQueryOptions(
   ["notes"],
   client.notes.$get
 );
 
-export const noteByIdQueryOptions = createQueryOptions(
+export const noteByIdQueryOptions = createHonoQueryOptions(
   ({ param: { id } }) => ["notes", id],
   client.notes[":id"].$get
 );
 
-export const createNoteMutationOptions = createMutationOptions(
+export const createNoteMutationOptions = createHonoMutationOptions(
   client.notes.$post
 );
 ```
@@ -152,6 +152,18 @@ await queryClient.invalidateQueries({
 ```
 
 No more magic literals and fully type-safe. Mutations are also used in the same way.
+
+If your endpoint takes parameters, you can do:
+
+```typescript
+const noteByIdQuery = useQuery(
+  noteByIdQueryOptions({ param: { id } }, { enabled: !!id })
+);
+```
+
+As you can see, the first argument (which is required) is the parameters for the endpoint and the second argument is the options for the query.
+
+You can visit the [GitHub repo](https://github.com/reno-stack/hono-react-query) for more information.
 
 ## Database
 
