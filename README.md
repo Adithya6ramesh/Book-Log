@@ -66,9 +66,11 @@ Visit `http://localhost:5173` to start building! 🚀
 
 ## Type-safety
 
-Reno Stack uses [Hono RPC](https://hono.dev/docs/guides/rpc) for type-safety, integrated with React Query through a [custom utility](https://github.com/reno-stack/hono-react-query). Use `createHonoQueryOptions` and `createHonoMutationOptions` for reusable query and mutation options.
+Reno Stack uses Hono RPC and React Query in a relatively unique way. React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/reno-stack/hono-react-query) that couples extremely well with Hono RPC. This utility gives you two functions called `createHonoQueryOptions` and `createHonoMutationOptions`. Here's how you'd use them:
 
-Example for a `notes` route:
+For each route of our application, we'll create a `{route}.queries.ts` under a folder named `queries` in our web application (these naming conventions are arbitrary and can be changed to anything that you'd like)
+
+Let's say you have a `notes` route. In `notes.queries.ts`, you would have something like this:
 
 ```typescript
 import { client } from "../utils/hono-client";
