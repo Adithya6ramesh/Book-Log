@@ -11,13 +11,16 @@
     "create:route": "pnpm --filter=@repo/server create:route"
   },
   "devDependencies": {
-    "eslint": "^9.25.1",
-    "prettier": "^3.2.5",
-    "turbo": "^2.5.2",
+    "eslint": "^9.31.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
     "typescript": "^5.8.3"
   },
   "packageManager": "pnpm@8.15.6",
-  "name": "with-vite-react",
+  "name": "reno-stack-monorepo",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "pnpm": {
     "overrides": {
       "esbuild@<=0.24.2": ">=0.25.0",
