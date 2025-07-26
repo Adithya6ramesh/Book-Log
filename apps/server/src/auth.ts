@@ -9,6 +9,13 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
+  socialProviders: {
+    discord: {
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
+      redirectURI: `${env.VITE_SERVER_URL}/api/auth/callback/discord`,
+    },
+  },
   trustedOrigins: [env.WEB_URL],
 });
 
