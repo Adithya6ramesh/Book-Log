@@ -6,15 +6,11 @@ import * as schema from "./db/schema";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: "mysql",
     schema,
   }),
-  socialProviders: {
-    discord: {
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-      redirectURI: `${env.VITE_SERVER_URL}/api/auth/callback/discord`,
-    },
+  emailAndPassword: {
+    enabled: true,
   },
   trustedOrigins: [env.WEB_URL],
 });
