@@ -5,8 +5,6 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     BETTER_AUTH_SECRET: z.string().min(1),
-    DISCORD_CLIENT_ID: z.string().min(1),
-    DISCORD_CLIENT_SECRET: z.string().min(1),
     WEB_URL:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
@@ -21,8 +19,6 @@ export const env = createEnv({
   runtimeEnvStrict: {
     DATABASE_URL: process.env.DATABASE_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     WEB_URL: process.env.WEB_URL,
     VITE_SERVER_URL: process.env.VITE_SERVER_URL,
   },
