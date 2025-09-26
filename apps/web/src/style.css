@@ -1,8 +1,7 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
-@source "../../../packages/ui/src";
 body {
-  @apply bg-zinc-950 text-zinc-50;
+  background-color: #09090b;
+  color: #fafafa;
 }
 
 /*
@@ -55,7 +54,7 @@ body {
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 5% 64.9%;
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   .dark {

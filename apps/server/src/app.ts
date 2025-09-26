@@ -3,21 +3,25 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { env } from "../env";
 import { auth, type HonoAppContext } from "./auth";
-import { notes } from "./routes/notes";
+import { booksRouter } from "./routes/books";
 
 const app = new Hono<HonoAppContext>()
   // ------------------------------------------------------------
   // CORS
   // ------------------------------------------------------------
+  .use("*", async (c, next) => {
+    console.log("Middleware hit for", c.req.path, "from origin", c.req.header("origin"));
+    await next();
+  })
   .use(
     "*",
     cors({
-      origin: [env.WEB_URL],
+      origin: "http://localhost:5174",
       allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["POST", "GET", "OPTIONS"],
+      allowMethods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
-      credentials: true,
+      credentials: false,
     })
   )
   // ------------------------------------------------------------
@@ -39,8 +43,8 @@ const app = new Hono<HonoAppContext>()
   .on(["POST", "GET"], "/api/auth/*", (c) => {
     return auth.handler(c.req.raw);
   })
-  .get("/", (c) => c.json({ message: "Hello World" }))
-  .route("/notes", notes);
+  .get("/", (c) => c.json({ message: "Book Log API - Welcome!" }))
+  .route("/books", booksRouter);
 
 export default app;
 
