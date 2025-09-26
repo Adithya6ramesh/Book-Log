@@ -37,9 +37,10 @@ export function BookList() {
   });
 
   const books = booksQuery.data?.books || [];
-  
+
   // Debug log to see what data is coming from the API
   console.log("Books data from API:", books);
+  console.log("Detailed books:", books.map(b => ({ id: b.id, title: b.title, stars: b.stars })));
 
   // Filter and sort books
   const filteredAndSortedBooks = books
@@ -72,27 +73,28 @@ export function BookList() {
 
 
   const renderStars = (stars?: number | null) => {
-    // For debugging, log the value to see what's being passed
-    console.log("Star rating value:", stars, typeof stars);
+    console.log("Book stars value:", stars, "type:", typeof stars);
 
-    if (stars === null || stars === undefined) return <span className="text-gray-400">No rating</span>;
+    if (stars === null || stars === undefined) return <span style={{ color: '#9ca3af' }}>No rating</span>;
 
-    // Ensure stars is a number between 0-5
     const starValue = Math.max(0, Math.min(5, Number(stars) || 0));
     console.log("Calculated starValue:", starValue);
 
-    return (
-      <div className="flex items-center">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span
-            key={i}
-            style={{ color: i < starValue ? '#fbbf24' : '#94a3b8' }}
-          >
-            ⭐
-          </span>
-        ))}
-      </div>
-    );
+    const starsArray = [];
+    for (let i = 0; i < 5; i++) {
+      const isFilled = i < starValue;
+      console.log(`Star ${i}: filled=${isFilled}, starValue=${starValue}`);
+      starsArray.push(
+        <span
+          key={`${i}-${starValue}`}
+          style={{ color: isFilled ? '#fbbf24' : '#64748b' }}
+        >
+          {isFilled ? '★' : '☆'}
+        </span>
+      );
+    }
+
+    return <div className="flex items-center">{starsArray}</div>;
   };
 
   if (booksQuery.isLoading) {
