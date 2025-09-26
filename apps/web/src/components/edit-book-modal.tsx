@@ -83,12 +83,12 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-3xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 backdrop-blur-sm">
+      <div className="bg-[#1a1a1c] p-6 rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto border border-[#2a2a2c] shadow-xl">
         <h2 className="text-xl font-bold mb-4">Edit Book</h2>
         
         {errors.general && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-red-900/30 border border-red-800/50 text-red-400 rounded">
             {errors.general}
           </div>
         )}
@@ -101,10 +101,10 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={`text-black ${errors.title ? "border-red-500" : ""}`}
+              className={`bg-[#232328] border-[#2a2a2c] text-gray-200 ${errors.title ? "border-red-500" : ""}`}
             />
             {errors.title && (
-              <span className="text-sm text-red-600">{errors.title}</span>
+              <span className="text-sm text-red-400">{errors.title}</span>
             )}
           </div>
 
@@ -115,10 +115,10 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              className={`text-black ${errors.author ? "border-red-500" : ""}`}
+              className={`bg-[#232328] border-[#2a2a2c] text-gray-200 ${errors.author ? "border-red-500" : ""}`}
             />
             {errors.author && (
-              <span className="text-sm text-red-600">{errors.author}</span>
+              <span className="text-sm text-red-400">{errors.author}</span>
             )}
           </div>
 
@@ -128,7 +128,7 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value as "reading" | "done")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black"
+              className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md text-gray-200"
             >
               <option value="reading">Currently Reading</option>
               <option value="done">Completed</option>
@@ -141,7 +141,7 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               id="stars"
               value={stars || ""}
               onChange={(e) => setStars(e.target.value ? Number(e.target.value) : undefined)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black"
+              className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md text-gray-200"
             >
               <option value="">No rating</option>
               <option value={1}>1 ⭐</option>
@@ -151,7 +151,7 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               <option value={5}>5 ⭐⭐⭐⭐⭐</option>
             </select>
             {errors.stars && (
-              <span className="text-sm text-red-600">{errors.stars}</span>
+              <span className="text-sm text-red-400">{errors.stars}</span>
             )}
           </div>
 
@@ -164,7 +164,7 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               placeholder="What did you think about this book?"
               rows={3}
               maxLength={1000}
-              className="w-full px-3 py-2 border border-gray-300 rounded-xl resize-none text-black"
+              className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md resize-none text-gray-200"
             />
             <div className="text-xs text-gray-500 text-right">
               {review.length}/1000 characters
@@ -184,7 +184,7 @@ export function EditBookModal({ book, onClose }: EditBookModalProps) {
               variant="outline"
               onClick={onClose}
               disabled={updateBookMutation.isPending}
-              className="text-black"
+              className="bg-transparent border-[#2a2a2c] hover:bg-[#232328] text-gray-300"
             >
               Cancel
             </Button>

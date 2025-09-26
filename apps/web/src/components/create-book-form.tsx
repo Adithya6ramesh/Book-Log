@@ -76,47 +76,47 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
       <h2 className="text-xl font-bold mb-4">Add New Book</h2>
       
       {errors.general && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div className="mb-4 p-3 bg-red-900/30 border border-red-800/50 text-red-400 rounded">
           {errors.general}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="title" className="text-black">Title *</Label>
+          <Label htmlFor="title" className="text-gray-300">Title *</Label>
           <Input
             id="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className={`text-black ${errors.title ? "border-red-500" : ""}`}
+            className={`bg-[#232328] border-[#2a2a2c] text-gray-200 ${errors.title ? "border-red-500" : ""}`}
           />
           {errors.title && (
-            <span className="text-sm text-red-600">{errors.title}</span>
+            <span className="text-sm text-red-400">{errors.title}</span>
           )}
         </div>
 
         <div>
-          <Label htmlFor="author" className="text-black">Author *</Label>
+          <Label htmlFor="author" className="text-gray-300">Author *</Label>
           <Input
             id="author"
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            className={`text-black ${errors.author ? "border-red-500" : ""}`}
+            className={`bg-[#232328] border-[#2a2a2c] text-gray-200 ${errors.author ? "border-red-500" : ""}`}
           />
           {errors.author && (
-            <span className="text-sm text-red-600">{errors.author}</span>
+            <span className="text-sm text-red-400">{errors.author}</span>
           )}
         </div>
 
         <div>
-          <Label htmlFor="status" className="text-black">Status</Label>
+          <Label htmlFor="status" className="text-gray-300">Status</Label>
           <select
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value as "reading" | "done")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black"
+            className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md text-gray-200"
           >
             <option value="reading">Currently Reading</option>
             <option value="done">Completed</option>
@@ -124,12 +124,12 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="stars" className="text-black">Rating (1-5 stars)</Label>
+          <Label htmlFor="stars" className="text-gray-300">Rating (1-5 stars)</Label>
           <select
             id="stars"
             value={stars || ""}
             onChange={(e) => setStars(e.target.value ? Number(e.target.value) : undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black"
+            className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md text-gray-200"
           >
             <option value="">No rating</option>
             <option value={1}>1 ⭐</option>
@@ -139,12 +139,12 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
             <option value={5}>5 ⭐⭐⭐⭐⭐</option>
           </select>
           {errors.stars && (
-            <span className="text-sm text-red-600">{errors.stars}</span>
+            <span className="text-sm text-red-400">{errors.stars}</span>
           )}
         </div>
 
         <div>
-          <Label htmlFor="review" className="text-black">Review (optional)</Label>
+          <Label htmlFor="review" className="text-gray-300">Review (optional)</Label>
           <textarea
             id="review"
             value={review}
@@ -152,7 +152,7 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
             placeholder="What did you think about this book?"
             rows={3}
             maxLength={1000}
-            className="w-full px-3 py-2 border border-gray-300 rounded-xl resize-none text-black"
+            className="w-full px-3 py-2 bg-[#232328] border-[#2a2a2c] border rounded-md resize-none text-gray-200"
           />
           <div className="text-xs text-gray-500 text-right">
             {review.length}/1000 characters
@@ -172,7 +172,7 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
             variant="outline"
             onClick={onClose}
             disabled={createBookMutation.isPending}
-            className="text-black"
+            className="bg-transparent border-[#2a2a2c] hover:bg-[#232328] text-gray-300"
           >
             Cancel
           </Button>

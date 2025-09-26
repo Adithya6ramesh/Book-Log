@@ -4,7 +4,6 @@ import { booksQueryOptions, deleteBookMutationOptions } from "../queries/books.q
 import { CreateBookForm } from "./create-book-form";
 import { EditBookModal } from "./edit-book-modal";
 import { Button } from "@repo/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/card";
 
 type Book = {
   id: number;
@@ -71,19 +70,24 @@ export function BookList() {
   const readingCount = books.filter((book) => book.status === "reading").length;
   const doneCount = books.filter((book) => book.status === "done").length;
 
+
   const renderStars = (stars?: number | null) => {
     // For debugging, log the value to see what's being passed
     console.log("Star rating value:", stars, typeof stars);
-    
+
     if (stars === null || stars === undefined) return <span className="text-gray-400">No rating</span>;
-    
+
     // Ensure stars is a number between 0-5
     const starValue = Math.max(0, Math.min(5, Number(stars) || 0));
-    
+    console.log("Calculated starValue:", starValue);
+
     return (
       <div className="flex items-center">
         {Array.from({ length: 5 }, (_, i) => (
-          <span key={i} className={i < starValue ? "text-yellow-400" : "text-gray-300"}>
+          <span
+            key={i}
+            style={{ color: i < starValue ? '#fbbf24' : '#94a3b8' }}
+          >
             ⭐
           </span>
         ))}
@@ -112,32 +116,53 @@ export function BookList() {
     <div className="container mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">My Book Log</h1>
-        
+        <h1
+          className="text-5xl font-bold mb-6"
+          style={{
+            background: 'linear-gradient(to right, #ec4899, #3b82f6)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}
+        >
+          Book Logs
+        </h1>
+
         {/* Stats */}
-        <div className="flex gap-4 mb-6">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-blue-600">{readingCount}</div>
-              <div className="text-sm text-gray-600">Currently Reading</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-green-600">{doneCount}</div>
-              <div className="text-sm text-gray-600">Books Completed</div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+          <div className="dashboard-card">
+            <div className="metric-label">Total Books</div>
+            <div className="metric-value">{books.length}</div>
+            <div className={books.length > 0 ? "metric-change-positive" : "metric-change-neutral"}>
+              {books.length > 0 ? "↑" : ""} {books.length} titles in your collection
+            </div>
+          </div>
+
+          <div className="dashboard-card">
+            <div className="metric-label">Currently Reading</div>
+            <div className="metric-value">{readingCount}</div>
+            <div className="metric-change-positive">
+              {readingCount > 0 ? `${Math.round((readingCount / Math.max(1, books.length)) * 100)}%` : "0%"} of your collection
+            </div>
+          </div>
+
+          <div className="dashboard-card">
+            <div className="metric-label">Books Completed</div>
+            <div className="metric-value">{doneCount}</div>
+            <div className="metric-change-positive">
+              {doneCount > 0 ? `${Math.round((doneCount / Math.max(1, books.length)) * 100)}%` : "0%"} completion rate
+            </div>
+          </div>
         </div>
 
         {/* Controls */}
         <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             {/* Filter */}
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as BookFilter)}
-              className="px-3 py-2 border border-gray-300 rounded-xl"
+              className="px-4 py-2 bg-[#1a1a1c] border border-[#2a2a2c] rounded-lg text-gray-200"
             >
               <option value="all">All Books</option>
               <option value="reading">Currently Reading</option>
@@ -148,7 +173,7 @@ export function BookList() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortBy)}
-              className="px-3 py-2 border border-gray-300 rounded-xl"
+              className="px-4 py-2 bg-[#1a1a1c] border border-[#2a2a2c] rounded-lg text-gray-200"
             >
               <option value="createdAt">Sort by Date</option>
               <option value="title">Sort by Title</option>
@@ -159,8 +184,12 @@ export function BookList() {
 
           <Button
             onClick={() => setShowCreateForm(true)}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg flex items-center gap-2"
           >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
             Add New Book
           </Button>
         </div>
@@ -168,8 +197,8 @@ export function BookList() {
 
       {/* Create Form Modal */}
       {showCreateForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-3xl max-w-md w-full mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-[#1a1a1c] p-6 rounded-lg max-w-md w-full mx-4 border border-[#2a2a2c] shadow-xl">
             <CreateBookForm onClose={() => setShowCreateForm(false)} />
           </div>
         </div>
@@ -183,10 +212,12 @@ export function BookList() {
         />
       )}
 
+
       {/* Books Grid */}
+      <h2 className="text-xl font-semibold mb-4">Your Books</h2>
       {filteredAndSortedBooks.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500 mb-4">
+        <div className="dashboard-card text-center py-8">
+          <p className="text-gray-400 mb-4">
             {filter === "all" 
               ? "No books in your library yet." 
               : `No ${filter} books found.`}
@@ -199,66 +230,68 @@ export function BookList() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredAndSortedBooks.map((book) => (
-            <Card key={book.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-lg">{book.title}</CardTitle>
-                <p className="text-sm text-gray-600">by {book.author}</p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {/* Status */}
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        book.status === "reading"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
-                    >
-                      {book.status === "reading" ? "Currently Reading" : "Completed"}
-                    </span>
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">Rating:</span>
-                    {renderStars(book.stars)}
-                  </div>
-
-                  {/* Review */}
-                  {book.review && (
-                    <div>
-                      <span className="text-sm font-medium">Review:</span>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-3">
-                        {book.review}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Actions */}
-                  <div className="flex gap-2 pt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setEditingBook(book)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeleteBook(book.id)}
-                      className="text-red-600 hover:text-red-700"
-                      disabled={deleteBookMutation.isPending}
-                    >
-                      Delete
-                    </Button>
-                  </div>
+            <div key={book.id} className="dashboard-card hover:border-blue-500 transition-colors">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h3 className="font-semibold text-lg">{book.title}</h3>
+                  <p className="text-sm text-gray-400">by {book.author}</p>
                 </div>
-              </CardContent>
-            </Card>
+                <span
+                  className={`px-2 py-1 rounded-md text-xs font-medium ${
+                    book.status === "reading"
+                      ? "bg-blue-900/30 text-blue-400 border border-blue-700/50"
+                      : "bg-green-900/30 text-green-400 border border-green-700/50"
+                  }`}
+                >
+                  {book.status === "reading" ? "Reading" : "Completed"}
+                </span>
+              </div>
+
+              {/* Rating */}
+              <div className="mb-3">
+                <div className="text-xs text-gray-400 mb-1">Rating</div>
+                <div className="flex items-center">
+                  {renderStars(book.stars)}
+                </div>
+              </div>
+
+              {/* Review */}
+              {book.review && (
+                <div className="mb-3">
+                  <div className="text-xs text-gray-400 mb-1">Review</div>
+                  <p className="text-sm text-gray-300 line-clamp-3">
+                    "{book.review}"
+                  </p>
+                </div>
+              )}
+
+              <div className="text-xs text-gray-500 mb-3">
+                Added {new Date(book.createdAt).toLocaleDateString()}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 pt-2 border-t border-[#2a2a2c]">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingBook(book)}
+                  className="bg-transparent text-gray-300 border-[#2a2a2c] hover:bg-[#2a2a2c]"
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDeleteBook(book.id)}
+                  className="bg-transparent text-red-400 border-[#2a2a2c] hover:bg-red-900/30"
+                  disabled={deleteBookMutation.isPending}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
           ))}
         </div>
       )}

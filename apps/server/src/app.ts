@@ -16,7 +16,7 @@ const app = new Hono<HonoAppContext>()
   .use(
     "*",
     cors({
-      origin: "http://localhost:5174",
+      origin: "*",
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
