@@ -124,7 +124,7 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="stars" className="text-gray-300">Rating (1-5 stars)</Label>
+          <Label htmlFor="stars" className="text-gray-300">Rating (1-5)</Label>
           <select
             id="stars"
             value={stars || ""}
@@ -144,7 +144,7 @@ export function CreateBookForm({ onClose }: CreateBookFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="review" className="text-gray-300">Review (optional)</Label>
+          <Label htmlFor="review" className="text-gray-300">Review</Label>
           <textarea
             id="review"
             value={review}
