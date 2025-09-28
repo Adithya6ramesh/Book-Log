@@ -4,7 +4,7 @@
 > **A modern personal book tracking application built with the Reno Stack**
 
 Book-Log is a full-stack web application that helps you organize and track your personal reading library. Built with modern technologies, it offers a clean interface to manage your books, track reading progress, write reviews, and authenticate securely.
-
+ DEMO VIDEO - https://www.loom.com/share/5f00041cf379407897a1f1de155ba387?sid=08733f29-eff6-4776-9916-a00dfca14bc5
 ## ✨ Features
 
 - 📖 **Personal Library Management** – Add, edit, and organize your book collection
