@@ -18,16 +18,19 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false,
+    minPasswordLength: 6,
   },
   socialProviders: {
     discord: {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
-      callbackUrl: "/api/auth/callback/discord",
+      redirectURI: `${env.VITE_SERVER_URL}/api/auth/callback/discord`,
+      scope: ["identify", "email"],
     },
   },
   baseUrl: env.VITE_SERVER_URL,
-  trustedOrigins: [env.WEB_URL],
+  trustedOrigins: [env.WEB_URL, env.VITE_SERVER_URL],
 });
 
 type AuthStatus =

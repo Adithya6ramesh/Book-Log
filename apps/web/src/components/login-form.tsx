@@ -15,6 +15,11 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
+    if (!username || !password) {
+      alert("Please fill in both email and password");
+      return;
+    }
+
     try {
       const result = await authClient.signIn.email({
         email: username,
@@ -23,26 +28,28 @@ export const LoginForm = () => {
       
       if (result.data) {
         navigate({ to: "/" });
+      } else if (result.error) {
+        alert(`Sign in failed: ${result.error.message}`);
       } else {
         alert("Invalid credentials");
       }
     } catch (error) {
       console.error("Sign in error:", error);
-      alert("Sign in failed. Please try again.");
+      if (error instanceof Error) {
+        alert(`Sign in failed: ${error.message}`);
+      } else {
+        alert("Sign in failed. Please try again.");
+      }
     }
   };
 
   const handleDiscordLogin = async () => {
     try {
       console.log("Starting Discord login...");
-      const response = await authClient.signIn.social({
+      await authClient.signIn.social({
         provider: "discord",
         callbackURL: window.location.origin,
-        fetchOptions: {
-          credentials: "include"
-        }
       });
-      console.log("Discord login response:", response);
     } catch (error) {
       console.error("Discord login error:", error);
       if (error instanceof Error) {

@@ -63,7 +63,18 @@ const app = new Hono<HonoAppContext>()
       return c.json({ error: "Authentication error" }, 500);
     }
   })
-  .get("/", (c) => c.json({ message: "Book Log API - Welcome!" }))
+  .get("/", async (c) => {
+    // If this is hit with a session (likely from OAuth), redirect to frontend
+    const user = c.get("user");
+    const acceptHeader = c.req.header("accept");
+    
+    // If user is authenticated and this looks like a browser request, redirect to frontend
+    if (user && acceptHeader && acceptHeader.includes("text/html")) {
+      return c.redirect(env.WEB_URL);
+    }
+    
+    return c.json({ message: "Book Log API - Welcome!" });
+  })
   .route("/books", booksRouter);
 
 export default app;

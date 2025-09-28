@@ -18,6 +18,11 @@ export const RegisterForm = () => {
       return;
     }
     
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return;
+    }
+    
     if (password !== confirmPassword) {
       alert("Passwords don't match");
       return;
@@ -32,24 +37,35 @@ export const RegisterForm = () => {
       
       if (result.data) {
         navigate({ to: "/" });
+      } else if (result.error) {
+        alert(`Registration failed: ${result.error.message}`);
       } else {
         alert("Registration failed. Please try again.");
       }
     } catch (error) {
       console.error("Registration error:", error);
-      alert("Registration failed. Please try again.");
+      if (error instanceof Error) {
+        alert(`Registration failed: ${error.message}`);
+      } else {
+        alert("Registration failed. Please try again.");
+      }
     }
   };
 
   const handleDiscordLogin = async () => {
     try {
+      console.log("Starting Discord registration/login...");
       await authClient.signIn.social({
         provider: "discord",
-        callbackURL: "/",
+        callbackURL: window.location.origin,
       });
     } catch (error) {
       console.error("Discord login error:", error);
-      alert("Discord login failed. Please try again.");
+      if (error instanceof Error) {
+        alert(`Discord login failed: ${error.message}`);
+      } else {
+        alert("Discord login failed. Please try again.");
+      }
     }
   };
 
