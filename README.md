@@ -1,162 +1,289 @@
-# Reno Stack
+# 📚 Book-Log
 
-![Reno Stack Banner](https://raw.githubusercontent.com/kasraghoreyshi/kasraghoreyshi/refs/heads/main/banner.jpg)
 
-> **CSR-focused • Self-hostable • Opinionated**
+> **A modern personal book tracking application built with the Reno Stack**
 
-Reno Stack is a modern web app starter kit designed for speed, efficiency, and self-hosting.
+Book-Log is a full-stack web application that helps you organize and track your personal reading library. Built with modern technologies, it offers a clean interface to manage your books, track reading progress, write reviews, and authenticate securely.
 
-## 🚀 Features
+## ✨ Features
 
-- ⚛️ **React App with Vite** – Fast and reliable
-- 🚦 **Tanstack Router** – File-based routing
-- 🔐 **Better-Auth** – Simple authentication
-- 🎨 **Tailwind + Shadcn** – Quick UI building
-- 🔗 **Type-safe DX** – End-to-end type safety
-- 🛠️ **Self-hostable** – Everything is self-hostable
-- 🧩 **Drizzle ORM** – Modern, type-safe ORM
-- 📦 **PNPM** – Efficient package management
+- 📖 **Personal Library Management** – Add, edit, and organize your book collection
+- � **Reading Progress Tracking** – Mark books as "reading" or "done"
+- ⭐ **Rating & Reviews** – Rate books (1-5 stars) and write detailed reviews
+- 🔐 **Secure Authentication** – Email/password and Discord OAuth integration
+- 🎨 **Modern UI** – Clean, responsive design with Tailwind CSS and Shadcn components
+- 🔍 **Smart Filtering** – Filter books by status and sort by various criteria
+- 🚀 **Real-time Updates** – Instant UI updates with React Query
+- �️ **Type Safety** – End-to-end type safety with TypeScript and Zod validation
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```text
-.vscode
-  └─ VSCode settings
-apps
-  ├─ server
-  |   ├─ Node server with Hono
-  |   ├─ Type-safe database with Drizzle ORM
-  |   ├─ Type-safe .env via @t3-oss/env-core
-  |   └─ Authentication with Better-Auth
-  └─ web
-      ├─ React
-      ├─ Vite
-      ├─ Tailwind CSS
-      ├─ React Hook Form
-      ├─ React Query with custom Hono RPC
-      └─ File-based routing with Tanstack Router
-packages
-  ├─ ui
-  |   └─ UI components with Shadcn
-  └─ validators
-      └─ Shared Zod schemas
+**Reno Stack Implementation:**
+- ⚛️ **Frontend**: React 18 + Vite 7
+- 🚦 **Routing**: TanStack Router (file-based)
+- 🔗 **Backend**: Hono.js server
+- 🔐 **Authentication**: Better-Auth with Discord OAuth
+- 🗄️ **Database**: PostgreSQL + Drizzle ORM
+- 🎨 **Styling**: Tailwind CSS + Shadcn/ui components
+- 📦 **Package Manager**: PNPM with Turborepo monorepo
+- 🔄 **State Management**: TanStack React Query
+- ✅ **Validation**: Zod schemas (shared between client/server)
+- 🐳 **Containerization**: Docker Compose for PostgreSQL
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js ≥ 22.0.0
+- PNPM
+- Docker (for database)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Adithya6ramesh/Book-Log.git
+   cd Book-Log
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Update `.env` with your values:
+   ```bash
+   DATABASE_URL="postgresql://postgres:password@localhost:5433/reno_books"
+   BETTER_AUTH_SECRET="your-secret-key-here"
+   DISCORD_CLIENT_ID="your-discord-client-id"
+   DISCORD_CLIENT_SECRET="your-discord-client-secret"
+   VITE_SERVER_URL="http://localhost:8080"
+   WEB_URL="http://localhost:5173"
+   ```
+
+4. **Start the database**
+   ```bash
+   docker-compose up -d
+   ```
+
+5. **Push database schema**
+   ```bash
+   pnpm db:push
+   ```
+
+6. **Start the development servers**
+   ```bash
+   pnpm dev
+   ```
+
+The application will be available at:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8080
+- **Database**: PostgreSQL on localhost:5433
+
+## 🔐 Discord OAuth Setup
+
+1. Create a Discord application at [Discord Developer Portal](https://discord.com/developers/applications)
+2. Go to OAuth2 settings and add redirect URI:
+   ```
+   http://localhost:8080/api/auth/callback/discord
+   ```
+3. Copy Client ID and Client Secret to your `.env` file
+4. Enable the following OAuth2 scopes: `identify`, `email`
+
+## 📁 Project Structure
+
+```
+Book-Log/
+├── apps/
+│   ├── server/                 # Hono.js API server
+│   │   ├── src/
+│   │   │   ├── auth.ts         # Better-Auth configuration
+│   │   │   ├── app.ts          # Main server application
+│   │   │   ├── index.ts        # Server entry point
+│   │   │   ├── db/
+│   │   │   │   ├── index.ts    # Database connection
+│   │   │   │   ├── schema.ts   # Drizzle schema definitions
+│   │   │   │   └── auth-schema.ts # Better-Auth schema
+│   │   │   └── routes/
+│   │   │       └── books.ts    # Books API endpoints
+│   │   └── package.json
+│   └── web/                    # React frontend
+│       ├── src/
+│       │   ├── main.tsx        # App entry point
+│       │   ├── components/     # React components
+│       │   │   ├── book-list.tsx
+│       │   │   ├── create-book-form.tsx
+│       │   │   ├── edit-book-modal.tsx
+│       │   │   ├── login-form.tsx
+│       │   │   └── register-form.tsx
+│       │   ├── queries/        # React Query configurations
+│       │   │   └── books.queries.ts
+│       │   ├── routes/         # TanStack Router routes
+│       │   │   ├── __root.tsx
+│       │   │   ├── index.tsx
+│       │   │   ├── login.tsx
+│       │   │   └── register.tsx
+│       │   └── utils/
+│       │       ├── auth-client.ts
+│       │       └── hono-client.ts
+│       └── package.json
+├── packages/
+│   ├── ui/                     # Shared UI components (Shadcn)
+│   ├── validators/             # Shared Zod validation schemas
+│   ├── tailwind-config/        # Shared Tailwind configuration
+│   └── typescript-config/      # Shared TypeScript configurations
+├── docker-compose.yml          # PostgreSQL database setup
+├── turbo.json                  # Turborepo configuration
+└── pnpm-workspace.yaml         # PNPM workspace configuration
 ```
 
-## Quick Start
+## 🎯 Core Features
 
-Before diving in, it's recommended to read the sections below for a better understanding of the stack. Here's how to run the example app:
+### Book Management
+- **Add Books**: Create new book entries with title, author, status, rating, and review
+- **Edit Books**: Update any book information inline or via modal
+- **Delete Books**: Remove books from your library with confirmation
+- **Status Tracking**: Mark books as "reading" or "done"
+- **Rating System**: 5-star rating system for completed books
+- **Reviews**: Write detailed text reviews for your books
 
-| Command                | Description                         |
-| ---------------------- | ----------------------------------- |
-| `pnpm i`               | Install dependencies                |
-| `cp .env.example .env` | Configure environment variables     |
-| `pnpm db:push`         | Push Drizzle schema to the database |
+### User Interface
+- **Responsive Design**: Works seamlessly on desktop and mobile
+- **Dark Theme**: Modern dark theme with Tailwind CSS
+- **Smart Filtering**: Filter by reading status (all, reading, done)
+- **Flexible Sorting**: Sort by title, author, rating, or date added
+- **Real-time Updates**: Instant UI updates without page refreshes
 
-Create a Discord application [here](https://discord.com/developers/applications). Go to your created application and add the following to `Redirects` in `OAuth2` settings:
+### Authentication
+- **Email/Password**: Traditional authentication with secure password handling
+- **Discord OAuth**: Social login with Discord integration
+- **Session Management**: Persistent sessions with Better-Auth
+- **Secure Routes**: Protected API endpoints and client-side route guards
 
-```
-http://localhost:8000/api/auth/callback/discord
-```
+## 🔧 API Endpoints
 
-Add `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` to `.env`. If you change the server's port, update `VITE_SERVER_URL` and the redirect URI.
+### Books API (`/books`)
+- `GET /books` - Fetch all books
+- `GET /books/:id` - Fetch single book by ID
+- `POST /books` - Create new book
+- `PUT /books/:id` - Update existing book
+- `DELETE /books/:id` - Delete book
 
-Visit `http://localhost:5173` to start building! 🚀
+### Authentication API (`/api/auth/*`)
+- `POST /api/auth/sign-up/email` - Email registration
+- `POST /api/auth/sign-in/email` - Email login
+- `POST /api/auth/sign-in/social` - Social OAuth login
+- `POST /api/auth/sign-out` - Logout
+- `GET /api/auth/get-session` - Get current session
+- `GET /api/auth/callback/discord` - Discord OAuth callback
 
-![Example App Screenshot](https://raw.githubusercontent.com/kasraghoreyshi/kasraghoreyshi/refs/heads/main/example-app.png)
+## 🗄️ Database Schema
 
-## Type-safety
-
-Reno Stack uses Hono RPC and React Query in a relatively unique way. React Query has a feature called [QueryOptions](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) which is basically for creating reusable `queryFn` and `queryKey`s. By taking advantage of this, we've made a [custom utility](https://github.com/reno-stack/hono-react-query) that couples extremely well with Hono RPC. This utility gives you two functions called `createHonoQueryOptions` and `createHonoMutationOptions`. Here's how you'd use them:
-
-For each route of our application, we'll create a `{route}.queries.ts` under a folder named `queries` in our web application (these naming conventions are arbitrary and can be changed to anything that you'd like)
-
-Let's say you have a `notes` route. In `notes.queries.ts`, you would have something like this:
-
-```typescript
-import { client } from "../utils/hono-client";
-import {
-  createHonoQueryOptions,
-  createHonoMutationOptions,
-} from "@reno-stack/hono-react-query";
-
-export const notesQueryOptions = createHonoQueryOptions(
-  ["notes"],
-  client.notes.$get
-);
-export const noteByIdQueryOptions = createHonoQueryOptions(
-  ({ param: { id } }) => ["notes", id],
-  client.notes[":id"].$get
-);
-export const createNoteMutationOptions = createHonoMutationOptions(
-  client.notes.$post
-);
-```
-
-Use them like this:
-
-```typescript
-const notesQuery = useQuery(notesQueryOptions());
-```
-
-Or in case of a query with parameters:
-
-```typescript
-const noteByIdQuery = useQuery(
-  noteByIdQueryOptions({ param: { id } }, { enabled: !!id })
-);
+### Books Table
+```sql
+books (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  author VARCHAR(255) NOT NULL,
+  status book_status DEFAULT 'reading',
+  stars INTEGER CHECK (stars >= 1 AND stars <= 5),
+  review TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+)
 ```
 
-Invalidate queries safely:
+### Authentication Tables
+Better-Auth automatically manages user authentication tables:
+- `user` - User account information
+- `session` - Active user sessions
+- `account` - OAuth account linkage
+- `verification` - Email verification tokens
 
-```typescript
-await queryClient.invalidateQueries({ queryKey: notesQueryOptions().queryKey });
+## 📝 Development Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development servers (both frontend and backend) |
+| `pnpm build` | Build for production |
+| `pnpm db:push` | Push Drizzle schema to database |
+| `pnpm db:studio` | Open Drizzle Studio for database management |
+| `pnpm lint` | Run ESLint across all packages |
+| `pnpm format` | Format code with Prettier |
+| `pnpm create:route <name>` | Create a new server route |
+| `pnpm ui-add <component>` | Add Shadcn UI components |
+
+## 🔒 Security Features
+
+- **Password Validation**: Minimum 6-character requirement
+- **Session Security**: HTTP-only cookies with proper SameSite settings
+- **CORS Protection**: Configured for specific origins
+- **Input Validation**: Server-side validation with Zod schemas
+- **SQL Injection Prevention**: Parameterized queries with Drizzle ORM
+- **Environment Variables**: Sensitive data stored in environment variables
+
+## 🚀 Deployment
+
+### Using Docker
+```bash
+# Build and start all services
+docker-compose up --build
+
+# For production
+docker-compose -f docker-compose.prod.yml up --build
 ```
 
-Simple as that! all the type safety and error handling are done by the utility.
+### Manual Deployment
+1. Build the applications:
+   ```bash
+   pnpm build
+   ```
 
-If you want more information about the utility or why you might need it, check out the [hono-react-query repository](https://github.com/reno-stack/hono-react-query).
+2. Set up production environment variables
 
-## Database
+3. Start the server:
+   ```bash
+   pnpm --filter=@repo/server start
+   ```
 
-Reno Stack uses Drizzle with PostgreSQL. Set your environment variables in `.env` and run `pnpm db:push` to apply migrations. Use `pnpm db:studio` to view the database schema and data.
+4. Serve the built frontend with your preferred static file server
 
-## Authentication
+## 🤝 Contributing
 
-It's highly recommended that you check out [Better-Auth's documentation](https://www.better-auth.com/docs/introduction) for learning more about the library.
+We welcome contributions! Please follow these steps:
 
-In short, you have a default schema file (`auth-schema.ts`) in the server app that is generated by Better-Auth and a main entry point called `auth.ts`. You can add any strategies that you want such as OAuth2 (Reno Stack's example comes with a Discord OAuth integration), email and password, OTP, etc
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and add tests if applicable
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
+6. Open a Pull Request
 
-Reno Stack comes with a `withAuth` middleware that you could use in any of your routes/group of routes. Example usage of a simple `notes` router:
+## 📄 License
 
-```typescript
-export const notes = new Hono<HonoAppContext>()
-	.post("/", zValidator("json", createNotesSchema), withAuth, async (c) => {
-	const  user = c.var.user;
-	const { title, content } = await c.req.valid("json");
-	// ...
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Creating Routes and Components
+## 🙏 Acknowledgments
 
-Use these commands to create new routes and components:
+- Built with [Reno Stack](https://github.com/reno-stack) - Modern full-stack framework
+- [Better-Auth](https://www.better-auth.com/) - Simple and secure authentication
+- [Hono.js](https://hono.dev/) - Fast, lightweight web framework
+- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM with excellent DX
+- [TanStack Router](https://tanstack.com/router) - Type-safe React routing
+- [Shadcn/ui](https://ui.shadcn.com/) - Beautiful, accessible UI components
 
-| Command                    | Description                   |
-| -------------------------- | ----------------------------- |
-| `pnpm create:route <name>` | \* Create a new server route  |
-| `pnpm ui-add <name>`       | Add UI components from Shadcn |
+## 📞 Support
 
-- Note \*: For creating a client route, please follow the instructions [here](https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing).
+If you encounter any issues or have questions:
+- Open an issue on [GitHub Issues](https://github.com/Adithya6ramesh/Book-Log/issues)
+- Check the [Reno Stack Documentation](https://github.com/reno-stack)
+- Review component documentation for UI components
 
-## Motivation
+---
 
-Reno Stack is heavily inspired by [T3 stack](https://create.t3.gg/) and it's [Turborepo template](https://github.com/t3-oss/create-t3-turbo), but it takes a different approach to building full-stack web applications. Unlike setups where Next.js handles both the API and client, Reno Stack decouples these components. The frontend is a React application powered by Vite, while the backend is a Hono-powered server. They communicate through type-safe API calls, allowing for faster iteration and a more streamlined development process.
-
-While there is ongoing debate about client-side rendering (CSR) being worse or on par with server-side rendering (SSR) in terms of SEO, Reno Stack is particularly suited for applications where SEO is not a primary concern. This is because features like SSG and SSR are not enabled by default (although they can be added, they're just not in the template at this moment). This approach makes Reno Stack an ideal choice for projects that prioritize speed and simplicity over SEO optimization.
-
-## Future Plans
-
-Plans include a CLI tool for generating projects with different technologies.
-
-## 🧑‍💻 Contributing
-
-PRs are welcome. Open an issue or provide feedback!
+**Happy Reading! 📚✨**
