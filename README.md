@@ -57,7 +57,7 @@ Book-Log is a full-stack web application that helps you organize and track your 
    
    Update `.env` with your values:
    ```bash
-   DATABASE_URL="postgresql://postgres:password@localhost:5433/reno_books"
+   DATABASE_URL=""
    BETTER_AUTH_SECRET="your-secret-key-here"
    DISCORD_CLIENT_ID="your-discord-client-id"
    DISCORD_CLIENT_SECRET="your-discord-client-secret"
