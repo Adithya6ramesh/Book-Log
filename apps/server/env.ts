@@ -10,6 +10,8 @@ export const env = createEnv({
         ? z.string().min(1)
         : z.string().min(1).optional().default("http://localhost:5173"),
     VITE_SERVER_URL: z.string().min(1),
+    DISCORD_CLIENT_ID: z.string().min(1),
+    DISCORD_CLIENT_SECRET: z.string().min(1),
   },
 
   /**
@@ -21,6 +23,8 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     WEB_URL: process.env.WEB_URL,
     VITE_SERVER_URL: process.env.VITE_SERVER_URL,
+    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   },
 
   /**
