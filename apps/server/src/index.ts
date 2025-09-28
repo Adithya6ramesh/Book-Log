@@ -12,6 +12,6 @@ serve(
     hostname: "0.0.0.0",
   },
   (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
+    console.log(`🚀 Book-Log Server running on http://localhost:${info.port}`);
   }
 );

@@ -4,13 +4,6 @@ import { env } from "../env";
 import { db } from "./db/index";
 import * as schema from "./db/schema";
 
-// For debugging
-console.log("Auth configuration:", { 
-  clientId: env.DISCORD_CLIENT_ID,
-  baseUrl: env.VITE_SERVER_URL,
-  webUrl: env.WEB_URL
-});
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",

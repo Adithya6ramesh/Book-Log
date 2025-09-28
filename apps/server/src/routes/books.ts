@@ -13,10 +13,8 @@ import type { HonoAppContext } from "../auth.js";
 export const booksRouter = new Hono<HonoAppContext>()
   // Get all books
   .get("/", async (c) => {
-    console.log("GET /books - Request received");
     try {
       const allBooks = await db.select().from(books).orderBy(books.createdAt);
-      console.log(`GET /books - Found ${allBooks.length} books`);
       return c.json({ books: allBooks });
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -63,7 +61,6 @@ export const booksRouter = new Hono<HonoAppContext>()
     try {
       const { id } = c.req.valid("param");
       const updateData = c.req.valid("json");
-      console.log("Updating book", id, updateData);
 
       const [updatedBook] = await db
         .update(books)
@@ -73,8 +70,6 @@ export const booksRouter = new Hono<HonoAppContext>()
         })
         .where(eq(books.id, id))
         .returning();
-
-      console.log("Updated book", updatedBook);
 
       if (!updatedBook) {
         return c.json({ error: "Book not found" }, 404);

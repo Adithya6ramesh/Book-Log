@@ -10,7 +10,6 @@ const app = new Hono<HonoAppContext>()
   // CORS
   // ------------------------------------------------------------
   .use("*", async (c, next) => {
-    console.log("Middleware hit for", c.req.path, "from origin", c.req.header("origin"));
     await next();
   })
   .use(
@@ -30,7 +29,6 @@ const app = new Hono<HonoAppContext>()
   .use("*", async (c, next) => {
     try {
       const session = await auth.api.getSession({ headers: c.req.raw.headers });
-      console.log("Session check for", c.req.path, ":", session ? "has session" : "no session");
 
       if (!session) {
         c.set("user", null);
@@ -49,15 +47,8 @@ const app = new Hono<HonoAppContext>()
     }
   })
   .on(["POST", "GET"], "/api/auth/*", async (c) => {
-    console.log("Auth route hit:", c.req.path);
-    console.log("Request method:", c.req.method);
-    console.log("Request headers:", Object.fromEntries(c.req.raw.headers.entries()));
-    console.log("Request URL:", c.req.url);
     try {
-      console.log("Calling auth.handler...");
-      const result = await auth.handler(c.req.raw);
-      console.log("Auth handler result:", result);
-      return result;
+      return await auth.handler(c.req.raw);
     } catch (error) {
       console.error("Auth handler error:", error);
       return c.json({ error: "Authentication error" }, 500);
